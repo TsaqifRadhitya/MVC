@@ -98,7 +98,7 @@ namespace DataGridView.Controller_folder
             form1.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             form1.dataGridView1.AllowUserToAddRows = false;
             form1.dataGridView1.DataSource = model.GetDataMahasiswa();
-            form1.dataGridView1.Columns["MahasiswaId"].Visible = false;
+            //form1.dataGridView1.Columns["MahasiswaId"].Visible = false;
             DataGridViewButtonColumn detail = new DataGridViewButtonColumn
             {
                 Name = "Detail",

@@ -6,9 +6,50 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
-
+   
 namespace DataGridView.Model_folder
 {
+    public abstract class Connection
+    {
+        private readonly string addres = "Host=localhost;Username=postgres;Password=;Database=pbo_mvc";
+        protected NpgsqlConnection conn;
+
+        protected bool Execute_No_Return(string query)
+        {
+            conn = new NpgsqlConnection(addres);
+            conn.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand();
+            cmd.CommandText = query;
+            cmd.Connection = conn;
+            try
+            {
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch
+            {
+                conn.Close();
+                return false;
+            }
+        }
+
+        protected NpgsqlDataReader Execute_With_Return(string query)
+        {
+            conn = new NpgsqlConnection(addres);
+            conn.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand();
+            cmd.CommandText = query;
+            cmd.Connection = conn;
+            NpgsqlDataReader data = cmd.ExecuteReader();
+            return data;
+        }
+        public void setup_db()
+        {
+            Execute_No_Return("CREATE TABLE IF NOT EXISTS Prodi(id_prodi serial UNIQUE,nama_prodi varchar not null)");
+            Execute_No_Return("CREATE TABLE IF NOT EXISTS Mahasiswa(id_mahasiswa serial,nama varchar not null,asal varchar not null,semester integer not null,fk_prodi integer not null,CONSTRAINT fk_prodi FOREIGN KEY (fk_prodi) REFERENCES Prodi(id_prodi))");
+        }
+    }
     public class Model : Connection
     {
         public static List<prodi> prodi;
@@ -34,7 +75,7 @@ namespace DataGridView.Model_folder
         public List<Mahasiswa> GetDataMahasiswa()
         {
             List<Mahasiswa> mahasiswa = new List<Mahasiswa>();
-            NpgsqlDataReader data = Execute_With_Return("select * from mahasiswa m Join Prodi p on m.fk_prodi = p.id_prodi");
+            NpgsqlDataReader data = Execute_With_Return("select * from mahasiswa m Join Prodi p on m.fk_prodi = p.id_prodi order by id_mahasiswa asc");
             while (data.Read())
             {
                 Mahasiswa data_permahasiswa = new Mahasiswa
@@ -77,48 +118,5 @@ namespace DataGridView.Model_folder
     {
         public int ProdiId { get; set; }
         public string Nama { get; set; }
-    }
-
-    public abstract class Connection
-    {
-        private readonly string addres = "Host=localhost;Username=postgres;Password=;Database=Project Catatan Tugas";
-        protected NpgsqlConnection conn;
-
-        public bool Execute_No_Return(string query)
-        {
-            conn = new NpgsqlConnection(addres);
-            conn.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.CommandText = query;
-            cmd.Connection = conn;
-            try
-            {
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return true;
-            }
-            catch
-            {
-                conn.Close();
-                return false;
-            }
-
-        }
-
-        public NpgsqlDataReader Execute_With_Return(string query)
-        {
-            conn = new NpgsqlConnection(addres);
-            conn.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.CommandText = query;
-            cmd.Connection = conn;
-            NpgsqlDataReader data = cmd.ExecuteReader();
-            return data;
-        }
-        public void setup_db()
-        {
-            Execute_No_Return("CREATE TABLE IF NOT EXISTS Prodi(id_prodi serial UNIQUE,nama_prodi varchar not null)");
-            Execute_No_Return("CREATE TABLE IF NOT EXISTS Mahasiswa(id_mahasiswa serial,nama varchar not null,asal varchar not null,semester integer not null,fk_prodi integer not null,CONSTRAINT fk_prodi FOREIGN KEY (fk_prodi) REFERENCES Prodi(id_prodi))");
-        }
     }
 }
