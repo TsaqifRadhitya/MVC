@@ -46,8 +46,17 @@ namespace DataGridView.Model_folder
         }
         public void setup_db()
         {
-            Execute_No_Return("CREATE TABLE IF NOT EXISTS Prodi(id_prodi serial UNIQUE,nama_prodi varchar not null)");
-            Execute_No_Return("CREATE TABLE IF NOT EXISTS Mahasiswa(id_mahasiswa serial,nama varchar not null,asal varchar not null,semester integer not null,fk_prodi integer not null,CONSTRAINT fk_prodi FOREIGN KEY (fk_prodi) REFERENCES Prodi(id_prodi))");
+            Execute_No_Return("CREATE TABLE IF NOT EXISTS " +
+                "Prodi(id_prodi serial UNIQUE," +
+                "nama_prodi varchar not null)");
+
+            Execute_No_Return("CREATE TABLE IF NOT EXISTS " +
+                "Mahasiswa(id_mahasiswa serial," +
+                "nama varchar not null," +
+                "asal varchar not null," +
+                "semester integer not null," +
+                "fk_prodi integer not null," +
+                "CONSTRAINT fk_prodi FOREIGN KEY (fk_prodi) REFERENCES Prodi(id_prodi))");
         }
     }
     public class Model : Connection
@@ -113,7 +122,6 @@ namespace DataGridView.Model_folder
         public int Semester { get; set; }
         public string prodi { get; set; }
     }
-
     public class prodi
     {
         public int ProdiId { get; set; }

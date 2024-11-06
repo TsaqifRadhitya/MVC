@@ -14,7 +14,7 @@ namespace DataGridView.View_folder
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            controller.event_click(e,dataGridView1);   
+            controller.event_click(e,dataGridView1);
         }
 
         private void label1_Click(object sender, EventArgs e)

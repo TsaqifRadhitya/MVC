@@ -30,7 +30,6 @@ namespace DataGridView.Controller_folder
             tambah.comboBox1.ValueMember = "ProdiId";
             tambah.Show();
         }
-
         public void simpan_tambah_data(string Nama, string Asal, int Semester, int prodi)
         {
             Mahasiswa mahasiswa = new Mahasiswa
@@ -147,24 +146,24 @@ namespace DataGridView.Controller_folder
             load_data();
         }
 
-        public void event_click(DataGridViewCellEventArgs a, System.Windows.Forms.DataGridView data)
+        public void event_click(DataGridViewCellEventArgs e, System.Windows.Forms.DataGridView data)
         {
-            if (a.ColumnIndex == data.Columns["Detail"].Index)
+            if (e.ColumnIndex == data.Columns["Detail"].Index)
             {
-                detail_data(form1.dataGridView1, a);
+                detail_data(data, e);
             }
-            else if (a.ColumnIndex == data.Columns["Delete"].Index)
+            else if (e.ColumnIndex == data.Columns["Delete"].Index)
             {
-                model.DeleteData(data.Rows[a.RowIndex].Cells["MahasiswaId"].Value.ToString());
+                model.DeleteData(data.Rows[e.RowIndex].Cells["MahasiswaId"].Value.ToString());
                 refresh();
             }
-            else if (a.ColumnIndex == data.Columns["Ubah"].Index)
+            else if (e.ColumnIndex == data.Columns["Ubah"].Index)
             {
-                Show_ubah_data(data.Rows[a.RowIndex].Cells["Nama"].Value.ToString(),
-                    data.Rows[a.RowIndex].Cells["Asal"].Value.ToString(),
-                    data.Rows[a.RowIndex].Cells["Semester"].Value.ToString(),
-                    data.Rows[a.RowIndex].Cells["Prodi"].Value.ToString(),
-                    int.Parse(data.Rows[a.RowIndex].Cells["MahasiswaId"].Value.ToString()));
+                Show_ubah_data(data.Rows[e.RowIndex].Cells["Nama"].Value.ToString(),
+                    data.Rows[e.RowIndex].Cells["Asal"].Value.ToString(),
+                    data.Rows[e.RowIndex].Cells["Semester"].Value.ToString(),
+                    data.Rows[e.RowIndex].Cells["Prodi"].Value.ToString(),
+                    int.Parse(data.Rows[e.RowIndex].Cells["MahasiswaId"].Value.ToString()));
             }
         }
     }
