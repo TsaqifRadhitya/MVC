@@ -48,7 +48,7 @@ namespace DataGridView.Model_folder
         {
             Execute_No_Return("CREATE TABLE IF NOT EXISTS " +
                 "Prodi(id_prodi serial UNIQUE," +
-                "nama_prodi varchar not null)");
+                "nama_prodi varchar not null UNIQUE)");
 
             Execute_No_Return("CREATE TABLE IF NOT EXISTS " +
                 "Mahasiswa(id_mahasiswa serial," +
@@ -57,6 +57,11 @@ namespace DataGridView.Model_folder
                 "semester integer not null," +
                 "fk_prodi integer not null," +
                 "CONSTRAINT fk_prodi FOREIGN KEY (fk_prodi) REFERENCES Prodi(id_prodi))");
+            try
+            {
+                Execute_No_Return("insert into prodi(nama_prodi) values ('SI'),('TI'),('IF')");
+            }
+            catch { }
         }
     }
     public class Model : Connection
